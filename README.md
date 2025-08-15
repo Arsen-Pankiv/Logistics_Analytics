@@ -102,18 +102,18 @@ The project involved formulating a mathematical optimisation model to **minimise
 
 <div align="center">
   <img src="screenshots/image_8.png" alt="image_8" width="400" height="150" />
-</div
+</div>
 
 ## Network Flow Visualization: Mapping Optimal Supply Chain Pathways
 
 <div align="center">
   <img src="screenshots/image_9.png" alt="image_9" width="600" height="600" />
-</div
+</div>
 
 
 <div align="center">
   <img src="screenshots/image_10.png" alt="image_10" width="600" height="500" />
-</div
+</div>
 
 ## Strategic supply chain recommendations
 
@@ -121,39 +121,39 @@ The project involved formulating a mathematical optimisation model to **minimise
 
 <div align="center">
   <img src="screenshots/image_11.png" alt="image_11" width="400" height="150" />
-</div
+</div>
 
 
 <div align="center">
   <img src="screenshots/image_12.png" alt="image_12" width="400" height="150" />
-</div
+</div>
 
 
 <div align="center">
   <img src="screenshots/image_13.png" alt="image_13" width="400" height="200" />
-</div
+</div>
 
 
 <div align="center">
   <img src="screenshots/image_14.png" alt="image_14" width="400" height="200" />
-</div
+</div>
 
 
 ### Recommendation (2): Strategic Relocation Proposal – Northeast Site (33×60)
 
 <div align="center">
   <img src="screenshots/image_15.png" alt="image_15" width="600" height="600" />
-</div
+</div>
 
 
 <div align="center">
   <img src="screenshots/image_16.png" alt="image_16" width="400" height="200" />
-</div
+</div>
 
 
 <div align="center">
   <img src="screenshots/image_17.png" alt="image_17" width="400" height="200" />
-</div
+</div>
 
 
 ## Limitations 
