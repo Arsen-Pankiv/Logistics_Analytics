@@ -94,19 +94,25 @@ The project involved formulating a mathematical optimisation model to **minimise
 
 ## Supply Chain Optimization: A PuLP Implementation for Cost Minimization
 
+The optimization model for **DeliverEase Ltd.** resulted in a total logistics cost of **€824,980.94**, ensuring all customer demands were met while respecting **route restrictions** and **transportation capacities**. The optimized network flow, illustrated in **Figure 1**, shows how products flow efficiently from **suppliers** to **warehouses** and then to **distribution centres**. Specifically, supplier S1 ships 23,357 kg to W1, 60,000 kg to W2, and 9,424 kg to W3, while supplier S2 supplies 10,936 kg to W2 and 15,000 kg to W3. From the warehouses, W1 ships 23,357 kg to DC2; W2 distributes 24,945 kg to DC1, 23,334 kg to DC3, and 22,657 kg to DC5; and W3 ships 24,424 kg to DC4. 
+
 <div align="center">
   <img src="screenshots/image_7.png" alt="image_7" width="500" height="200" />
 </div>
 
-<div align="center">
-  <img src="screenshots/image_8.png" alt="image_8" width="500" height="200" />
-</div>
+These link-specific flows reflect the model's **cost-effective** allocation strategy, minimizing transport expenses while adhering to the company's operational constraints.
+
 
 ## Network Flow Visualization: Mapping Optimal Supply Chain Pathways
+
+**Figure 2** illustrates the **optimized last-mile delivery network**, showing Customers **(blue dots)** and their assigned Distribution Centres **(red stars)**. Orange lines represent **DC-to-customer** delivery assignments. Each customer location is labelled with a **green text** indicating the total volume of goods (kg) they receive, effectively showcasing DC service areas and demand variations. The **total volume** for each customer is calculated step-by-step by multiplying the number of units of each product type by its corresponding weight and then summing these values for all products assigned to that customer.
 
 <div align="center">
   <img src="screenshots/image_9.png" alt="image_9" width="600" height="600" />
 </div>
+
+**Figure 3** illustrates the optimized product flow across a **multi-tiered supply chain**. It visually maps geographical locations of Suppliers **(orange triangles)**, Warehouses **(green stars)**, and Distribution Centres **(red stars)**. Connections denote pathways:** orange lines** for supplier-to-warehouse shipments, and **green lines** for warehouse-to-DC movements. Each line is clearly labelled with the exact product volume **(kg)**, providing a comprehensive view of the logistical plan.
+
 
 <div align="center">
   <img src="screenshots/image_10.png" alt="image_10" width="600" height="500" />
@@ -116,35 +122,54 @@ The project involved formulating a mathematical optimisation model to **minimise
 
 ### Recommendation (1): Strategic Network Optimization with Route Expansion
 
+Our primary recommendation involves the strategic opening of previously unused transportation routes: (W1,DC4), (W2,DC2), (W3,DC2), (W1,DC5), and (W3,DC1).
+The specific data regarding the fixed costs, variable costs, and capacity for these newly considered routes were unavailable. To ensure the accuracy of our model, we estimated these by calculating the average variable cost of existing outbound routes from Warehouses W1, W2, and W3 to various Distribution Centres (as detailed in Table 2). 
+
+
 <div align="center">
   <img src="screenshots/image_11.png" alt="image_11" width="500" height="200" />
 </div>
+
+Recognizing that the prior unavailability of these links might stem from higher associated costs, we conservatively increased this calculated average variable cost by €2. This increment, representing approximately half of the average variable cost, is intended to account for factors such as longer distances or other increased operational expenses for these newly opened routes.
 
 <div align="center">
   <img src="screenshots/image_12.png" alt="image_12" width="500" height="200" />
 </div>
 
-<div align="center">
-  <img src="screenshots/image_13.png" alt="image_13" width="500" height="200" />
-</div>
+A key outcome of the optimization is the strategic integration of the W2-DC2 route into the operational network, which was previously unavailable. Complementing this, a notable change in traffic involves Warehouse W1: while the Initial Model directed goods from W1 to DC2, the Adjusted Model now reroutes W1's traffic to DC3 as shown in Figure 4.
+
+By implementing these adjustments, the total transportation cost decreased from €824,980.94 to €802,060.27, representing a saving of approximately €22,920.67. This demonstrates that the proposed changes lead to a more efficient and cost-effective distribution strategy. 
 
 <div align="center">
   <img src="screenshots/image_14.png" alt="image_14" width="500" height="300" />
 </div>
 
+The pie chart effectively illustrates that the Route Expansion Model accounts for a smaller proportion (49%) of the combined costs compared to the Initial Model (51%). This directly demonstrates the successful cost reduction and improved efficiency achieved through the model adjustments.
+
+
 ### Recommendation (2): Strategic Relocation Proposal – Northeast Site (33×60)
+
+In large-scale distribution networks, even modest changes in facility location can yield substantial efficiency gains. This section explores a targeted relocation of Distribution Centre 1 (DC1) from its existing coordinates at (45, 45) to a proposed site at (33, 60). The motivation for this adjustment stems from spatial inefficiencies observed in last-mile delivery to nearby customers, particularly those in the C1–C10 group.
+
 
 <div align="center">
   <img src="screenshots/image_15.png" alt="image_15" width="600" height="600" />
 </div>
 
+Figure 6 presents a visual comparison of customer locations relative to both the existing and proposed DC sites. Customers are color-coded to indicate which of the two DCs they are closer to, making it clear that the proposed site better aligns with the majority of nearby demand points. 
+
 <div align="center">
   <img src="screenshots/image_16.png" alt="image_16" width="500" height="200" />
 </div>
 
+According to Table 4, 8 out of the 10 customers in this cluster would be geographically closer to the proposed DC, some by a substantial margin such as Customer C9, whose distance drops from 22.8 to just 3.61 units.
+
+
 <div align="center">
   <img src="screenshots/image_17.png" alt="image_17" width="500" height="200" />
 </div>
+
+Operational implications of this shift are further highlighted in Figure 7, which compares total network costs under the current and proposed configurations. The optimized solution with the new DC location results in a reduced total cost of €811,587.08, compared to €824,980.94 in the initial setup. This cost improvement of over €13,000 validates the effectiveness of the relocation strategy.
 
 ## Limitations 
 
