@@ -68,7 +68,7 @@ number of product units ordered by **each customer**.
 
 ## Task Overview
 
-The project involved formulating a mathematical optimisation model to **minimise total distribution costs** for DeliverEase Ltd.’s supply chain, incorporating route availability, capacity limits, flow balance, and demand satisfaction. The model, implemented in Python using **PuLP**, was solved to identify the **optimal shipment plan** and r**eport total costs** and **shipment weights** for each **link** between suppliers, warehouses, and distribution centres. Network flow **visualisations** were created to illustrate shipment magnitudes, and **two data-driven managerial recommendations** were developed to enhance cost efficiency and resilience to demand uncertainty.
+The project involved formulating a mathematical optimisation model to **minimise total distribution costs** for DeliverEase Ltd.’s supply chain, incorporating route availability, capacity limits, flow balance, and demand satisfaction. The model, implemented in Python using **PuLP**, was solved to identify the **optimal shipment plan** and **report total costs** and **shipment weights** for each **link** between suppliers, warehouses, and distribution centres. Network flow **visualisations** were created to illustrate shipment magnitudes, and **two data-driven managerial recommendations** were developed to enhance cost efficiency and resilience to demand uncertainty. Finally, several **limitations** and **recommendations** were considered to ensure the accuracy of the model.l
 
 
 ## Mathematical Programming Formulation
@@ -94,15 +94,71 @@ The project involved formulating a mathematical optimisation model to **minimise
 
 ## Supply Chain Optimization: A Pulp Implementation for Cost Minimization
 
+<div align="center">
+  <img src="screenshots/image_7.png" alt="image_7" width="400" height="150" />
+</div>
+
+
+
+<div align="center">
+  <img src="screenshots/image_8.png" alt="image_8" width="400" height="150" />
+</div
+
+
+
+
+
 
 ## Network Flow Visualization: Mapping Optimal Supply Chain Pathways
+
+
+<div align="center">
+  <img src="screenshots/image_9.png" alt="image_9" width="600" height="600" />
+</div
+
+
+
+
+<div align="center">
+  <img src="screenshots/image_10.png" alt="image_10" width="600" height="500" />
+</div
 
 ## Strategic supply chain recommendations
 
 ### Recommendation (1) : Strategic Network Optimization with Route Expansion
 
+<div align="center">
+  <img src="screenshots/image_11.png" alt="image_11" width="400" height="150" />
+</div
+
+
+<div align="center">
+  <img src="screenshots/image_12.png" alt="image_12" width="400" height="150" />
+</div
+
+<div align="center">
+  <img src="screenshots/image_13.png" alt="image_13" width="400" height="200" />
+</div
+
+
+<div align="center">
+  <img src="screenshots/image_14.png" alt="image_14" width="400" height="200" />
+</div
+
 ### Recommendation (2): Strategic Relocation Proposal – Northeast Site (33×60)
 
+<div align="center">
+  <img src="screenshots/image_15.png" alt="image_15" width="600" height="600" />
+</div
+
+
+<div align="center">
+  <img src="screenshots/image_16.png" alt="image_16" width="400" height="200" />
+
+  <div align="center">
+  <img src="screenshots/image_17.png" alt="image_17" width="400" height="200" />
+</div
+</div 
 ## Limitations 
 
 ## Conclusion 
