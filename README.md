@@ -17,7 +17,7 @@ The current network includes:
 **50 customers (C1–C50)**
 
 <div align="center">
-  <img src="screenshots/image_1.png" alt="image_2" width="300" height="300" />
+  <img src="screenshots/image_1.png" alt="image_2" width="400" height="400" />
 </div>
 
 ### Distribution network 
@@ -34,7 +34,7 @@ the geographical locations of all customers.
 
 
 <div align="center">
-  <img src="screenshots/image_2.png" alt="image_2" width="300" height="300" />
+  <img src="screenshots/image_2.png" alt="image_2" width="400" height="400" />
 </div>
 
 ### Product Information
@@ -95,11 +95,11 @@ The project involved formulating a mathematical optimisation model to **minimise
 ## Supply Chain Optimization: A PuLP Implementation for Cost Minimization
 
 <div align="center">
-  <img src="screenshots/image_7.png" alt="image_7" width="400" height="150" />
+  <img src="screenshots/image_7.png" alt="image_7" width="500" height="200" />
 </div>
 
 <div align="center">
-  <img src="screenshots/image_8.png" alt="image_8" width="400" height="150" />
+  <img src="screenshots/image_8.png" alt="image_8" width="500" height="200" />
 </div>
 
 ## Network Flow Visualization: Mapping Optimal Supply Chain Pathways
@@ -117,19 +117,19 @@ The project involved formulating a mathematical optimisation model to **minimise
 ### Recommendation (1): Strategic Network Optimization with Route Expansion
 
 <div align="center">
-  <img src="screenshots/image_11.png" alt="image_11" width="400" height="150" />
+  <img src="screenshots/image_11.png" alt="image_11" width="500" height="200" />
 </div>
 
 <div align="center">
-  <img src="screenshots/image_12.png" alt="image_12" width="400" height="150" />
+  <img src="screenshots/image_12.png" alt="image_12" width="500" height="200" />
 </div>
 
 <div align="center">
-  <img src="screenshots/image_13.png" alt="image_13" width="400" height="200" />
+  <img src="screenshots/image_13.png" alt="image_13" width="500" height="200" />
 </div>
 
 <div align="center">
-  <img src="screenshots/image_14.png" alt="image_14" width="400" height="200" />
+  <img src="screenshots/image_14.png" alt="image_14" width="500" height="300" />
 </div>
 
 ### Recommendation (2): Strategic Relocation Proposal – Northeast Site (33×60)
@@ -139,11 +139,11 @@ The project involved formulating a mathematical optimisation model to **minimise
 </div>
 
 <div align="center">
-  <img src="screenshots/image_16.png" alt="image_16" width="400" height="200" />
+  <img src="screenshots/image_16.png" alt="image_16" width="500" height="200" />
 </div>
 
 <div align="center">
-  <img src="screenshots/image_17.png" alt="image_17" width="400" height="200" />
+  <img src="screenshots/image_17.png" alt="image_17" width="500" height="200" />
 </div>
 
 ## Limitations 
