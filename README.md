@@ -79,120 +79,6 @@ number of product units ordered by **each customer**.
 
 The project involved formulating a mathematical optimisation model to **minimise total distribution costs** for DeliverEase Ltd.’s supply chain, incorporating route availability, capacity limits, flow balance, and demand satisfaction. The model, implemented in Python using **PuLP**, was solved to identify the **optimal shipment plan** and **report total costs** and **shipment weights** for each **link** between suppliers, warehouses, and distribution centres. Network flow **visualisations** were created to illustrate shipment magnitudes, and **two data-driven managerial recommendations** were developed to enhance cost efficiency and resilience to demand uncertainty. Finally, several **limitations** and **recommendations** were considered to ensure the accuracy of the model.l
 
-
-## Mathematical Programming Formulation
-
-### Sets
-
-$S$: Set of suppliers
-
-$W$: Set of warehouses
-
-$D$: Set of distribution centres
-
-$C$: Set of customers
-
-$P$: Set of products
-
-### Parameters
-
-$cap_{sw}$ : Capacity from supplier $s$ to warehouse $w$ (kg)
-
-$cap_{wd}$ : Capacity from warehouse $w$ to distribution centre $d$ (kg)
-
-$fixed_{sw}$ : Fixed cost for using $s \to w$ link
-
-$fixed_{wd}$ : Fixed cost for using $w \to d$ link
-
-$var_{sw}$ : Variable cost per kg for $s \to w$ link
-
-$var_{wd}$ : Variable cost per kg for $w \to d$ link
-
-$weight_p$ : Weight of one unit of product $p$ (kg/unit)
-
-$dist_{dc}$ : Euclidean distance from distribution centre $d$ to customer $c$
-
-$lastmilecost_p$ : Cost per kg per km for product $p$
-
-$demand_{cp}$ : Demand (in units) of product $p$ by customer $c$
-
-### Decision Variables
-
-$x_{swp} \geq 0$: Units of product $p$ transported from supplier $s$ to warehouse $w$
-
-$x_{wdp} \geq 0$: Units of product $p$ transported from warehouse $w$ to distribution centre $d$
-
-$x_{dcp} \geq 0$: Units of product $p$ delivered from distribution centre $d$ to customer $c$
-
-$y_{sw} \in \{0,1\}$: Binary variable, 1 if link from $s$ to $w$ is used
-
-$y_{wd} \in \{0,1\}$: Binary variable, 1 if link from $w$ to $d$ is used
-
-### Objective Function
-
-Minimise total cost:
-
-$$
-Z =
-\sum_{s \in S}\sum_{w \in W}\Big( fixed_{sw}\,y_{sw} + \sum_{p \in P} var_{sw}\,x_{swp}\,weight_p \Big)
-+ \sum_{w \in W}\sum_{d \in D}\Big( fixed_{wd}\,y_{wd} + \sum_{p \in P} var_{wd}\,x_{wdp}\,weight_p \Big)
-+ \sum_{d \in D}\sum_{c \in C}\sum_{p \in P} x_{dcp}\,weight_p\,dist_{dc}\,lastmilecost_p.
-$$
-
-### Constraints
-
-**Demand satisfaction**
-$$
-\sum_{d \in D} x_{dcp} = demand_{cp} \quad \forall\, c \in C,\; \forall\, p \in P
-$$
-
-**Distribution centre flow balance**
-$$
-\sum_{w \in W} x_{wdp} = \sum_{c \in C} x_{dcp} \quad \forall\, d \in D,\; \forall\, p \in P
-$$
-
-**Warehouse flow balance**
-$$
-\sum_{s \in S} x_{swp} = \sum_{d \in D} x_{wdp} \quad \forall\, w \in W,\; \forall\, p \in P
-$$
-
-**Link capacity (Suppliers → Warehouses)**
-$$
-\sum_{p \in P} x_{swp}\,weight_p \le cap_{sw}\,y_{sw} \quad \forall\, s \in S,\; \forall\, w \in W
-$$
-
-**Link capacity (Warehouses → DCs)**
-$$
-\sum_{p \in P} x_{wdp}\,weight_p \le cap_{wd}\,y_{wd} \quad \forall\, w \in W,\; \forall\, d \in D
-$$
-
-**Route availability (disable infeasible links)**
-$$
-y_{s2,w1}=0,\; y_{w1,d4}=0,\; y_{w1,d5}=0,\; y_{w2,d2}=0,\; y_{w3,d1}=0,\; y_{w3,d2}=0
-$$
-
-**Customer-to-DC allocation (fixed service areas)**
-$$
-x_{dcp} = 0 \quad \text{if } c \notin CustomerGroup_d \quad \forall\, d \in D,\; \forall\, c \in C,\; \forall\, p \in P
-$$
-
-**Where**
-$$
-\begin{aligned}
-CustomerGroup_{D1}&=\{C1,\dots,C10\},\;
-CustomerGroup_{D2}=\{C11,\dots,C20\},\\
-CustomerGroup_{D3}&=\{C21,\dots,C30\},\;
-CustomerGroup_{D4}=\{C31,\dots,C40\},\\
-CustomerGroup_{D5}&=\{C41,\dots,C50\}.
-\end{aligned}
-$$
-
-**Variable types**
-
-$x_{swp},\, x_{wdp},\, x_{dcp} \in \mathbb{Z}_{\ge 0}, \qquad y_{sw},\, y_{wd} \in \{0,1\}$
-
-
-
 ## Mathematical Programming Formulation
 
 ### Sets
@@ -226,73 +112,108 @@ $x_{swp},\, x_{wdp},\, x_{dcp} \in \mathbb{Z}_{\ge 0}, \qquad y_{sw},\, y_{wd} \
 - $y_{sw} \in \{0,1\}$: 1 if link from $s$ to $w$ is used  
 - $y_{wd} \in \{0,1\}$: 1 if link from $w$ to $d$ is used  
 
----
 
 ### Objective Function
 
 Minimise total cost:
 
 $$
-Z =
-\sum_{s \in S}\sum_{w \in W}\Big( fixed_{sw} \, y_{sw} + \sum_{p \in P} var_{sw} \, x_{swp} \, weight_p \Big)
-+ \sum_{w \in W}\sum_{d \in D}\Big( fixed_{wd} \, y_{wd} + \sum_{p \in P} var_{wd} \, x_{wdp} \, weight_p \Big)
-+ \sum_{d \in D}\sum_{c \in C}\sum_{p \in P} x_{dcp} \, weight_p \, dist_{dc} \, lastmilecost_p
+Z_1 = \sum_{s \in S}\sum_{w \in W} \Big( fixed_{sw} \, y_{sw} + \sum_{p \in P} var_{sw} \, x_{swp} \, weight_p \Big)
 $$
 
----
+$$
+Z_2 = \sum_{w \in W}\sum_{d \in D} \Big( fixed_{wd} \, y_{wd} + \sum_{p \in P} var_{wd} \, x_{wdp} \, weight_p \Big)
+$$
+
+$$
+Z_3 = \sum_{d \in D}\sum_{c \in C}\sum_{p \in P} x_{dcp} \, weight_p \, dist_{dc} \, lastmilecost_p
+$$
+
+$$
+Z = Z_1 + Z_2 + Z_3
+$$
+
 
 ### Constraints
 
 **Demand satisfaction**  
+
 $$
-\sum_{d \in D} x_{dcp} = demand_{cp} \quad \forall c \in C, \forall p \in P
+\sum_{d \in D} x_{dcp} = demand_{cp}, \quad \forall c \in C, \forall p \in P
 $$
 
 **Distribution centre flow balance**  
+
 $$
-\sum_{w \in W} x_{wdp} = \sum_{c \in C} x_{dcp} \quad \forall d \in D, \forall p \in P
+\sum_{w \in W} x_{wdp} = \sum_{c \in C} x_{dcp}, \quad \forall d \in D, \forall p \in P
 $$
 
 **Warehouse flow balance**  
+
 $$
-\sum_{s \in S} x_{swp} = \sum_{d \in D} x_{wdp} \quad \forall w \in W, \forall p \in P
+\sum_{s \in S} x_{swp} = \sum_{d \in D} x_{wdp}, \quad \forall w \in W, \forall p \in P
 $$
 
 **Link capacity (Suppliers → Warehouses)**  
+
 $$
-\sum_{p \in P} x_{swp} \, weight_p \le cap_{sw} \, y_{sw} \quad \forall s \in S, \forall w \in W
+\sum_{p \in P} x_{swp} \, weight_p \le cap_{sw} \, y_{sw}, \quad \forall s \in S, \forall w \in W
 $$
 
 **Link capacity (Warehouses → DCs)**  
+
 $$
-\sum_{p \in P} x_{wdp} \, weight_p \le cap_{wd} \, y_{wd} \quad \forall w \in W, \forall d \in D
+\sum_{p \in P} x_{wdp} \, weight_p \le cap_{wd} \, y_{wd}, \quad \forall w \in W, \forall d \in D
 $$
 
 **Route availability (disable infeasible links)**  
+
 $$
-y_{s2,w1} = 0, \; y_{w1,d4} = 0, \; y_{w1,d5} = 0, \; y_{w2,d2} = 0, \; y_{w3,d1} = 0, \; y_{w3,d2} = 0
+y_{s2,w1} = 0, \quad y_{w1,d4} = 0, \quad y_{w1,d5} = 0, \quad y_{w2,d2} = 0, \quad y_{w3,d1} = 0, \quad y_{w3,d2} = 0
 $$
 
 **Customer-to-DC allocation (fixed service areas)**  
+
 $$
-x_{dcp} = 0 \quad \text{if } c \notin CustomerGroup_d \quad \forall d \in D, \forall c \in C, \forall p \in P
+x_{dcp} = 0 \quad \text{if } c \notin CustomerGroup_d, \quad \forall d \in D, \forall c \in C, \forall p \in P
 $$
 
-**Where CustomerGroup sets**  
-CustomerGroup_D1 = {C1,…,C10}
-CustomerGroup_D2 = {C11,…,C20}
-CustomerGroup_D3 = {C21,…,C30}
-CustomerGroup_D4 = {C31,…,C40}
-CustomerGroup_D5 = {C41,…,C50}
+**Where CustomerGroup sets**
 
-pgsql
-Копировать
-Редактировать
+$$
+CustomerGroup_{D1} = \{ C1, C2, \dots, C10 \}
+$$
 
-**Variable types**  
 $$
-x_{swp}, x_{wdp}, x_{dcp} \in \mathbb{Z}_{\ge 0}, \quad y_{sw}, y_{wd} \in \{0,1\}
+CustomerGroup_{D2} = \{ C11, C12, \dots, C20 \}
 $$
+
+$$
+CustomerGroup_{D3} = \{ C21, C22, \dots, C30 \}
+$$
+
+$$
+CustomerGroup_{D4} = \{ C31, C32, \dots, C40 \}
+$$
+
+$$
+CustomerGroup_{D5} = \{ C41, C42, \dots, C50 \}
+$$
+
+---
+
+### Variable types
+
+$$
+x_{swp}, x_{wdp}, x_{dcp} \in \mathbb{Z}_{\ge 0}
+$$
+
+$$
+y_{sw}, y_{wd} \in \{0,1\}
+$$
+
+
+
 
 ## Supply Chain Optimization: A PuLP Implementation for Cost Minimization
 
