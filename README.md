@@ -1,7 +1,16 @@
-# Logistics_Analytics
+# Mathematical Optimisation of a Multi-Tier Supply Chain Network
 
 ## Introduction 
 
+**Efficient logistics** and **supply chain management** are critical for companies aiming to balance growing customer demand with cost control. This project focuses on **DeliverEase Ltd**., an online **retailer** of home essentials, and its **multi-tier distribution network**. Using the dataset **“date 11.35.31”**, the study develops **a mathematical optimisation model** to minimise distribution costs while respecting capacity limits, route availability, and demand requirements. The approach integrates supplier-to-warehouse shipments, warehouse-to-distribution centre flows, and last-mile deliveries, providing both **quantitative insights** and **practical recommendations** to improve cost efficiency and network resilience
+
+## Dataset Overview
+
+The dataset **“date 11.35.31”** contains structured information to model and analyze **DeliverEase Ltd.’s** supply chain network, covering product characteristics, transportation routes, logistics costs, and customer demand. The **“Product Weight”** sheet specifies the unit weight **(in kilograms)** of products P1–P5, which is crucial for transport cost calculations. The **“Shipping Information”** sheet details available links between suppliers, warehouses, and distribution centres, including their capacities, fixed costs, and variable costs per kilogram. The **“Last Mile Coordinates”** sheet provides the **geographic positions** of distribution centres **(DC1–DC5)** and customers **(C1–C8)**, enabling the calculation of distance-based delivery costs. Complementing this, the **“Last Mile Cost per Product per KG”** sheet specifies product-dependent delivery costs per kilogram per kilometre. Finally, the **“Demands per Product Type”** sheet records **customer-level demand** for each product, serving as the basis for supply allocation and optimisation. Collectively, these datasets provide a robust foundation for supply chain modelling, transportation planning, and cost-minimisation analysis.
+
+## Methodology 
+
+The project leverages **Python** and **linear programming** to optimize the supply chain network. Data on shipping routes, product demand, and last-mile coordinates were processed using **pandas** and **numpy**, while costs and capacities were defined for each route. **Euclidean distances** between distribution centers and customers were calculated to estimate last-mile delivery costs. The optimization model, implemented with **PuLP**, minimizes total shipping costs by determining optimal shipment quantities along each route, while ensuring customer demand is met and route capacities are not exceeded.
 
 ## Project Background and Network Description
 
@@ -73,23 +82,115 @@ The project involved formulating a mathematical optimisation model to **minimise
 
 ## Mathematical Programming Formulation
 
-<div align="center">
-  <img src="screenshots/image_3.png" alt="image_3" width="500" height="600" />
-</div>
+### Sets
 
+$S$: Set of suppliers
 
-<div align="center">
-  <img src="screenshots/image_4.png" alt="image_4" width="500" height="600" />
-</div>
+$W$: Set of warehouses
 
+$D$: Set of distribution centres
 
-<div align="center">
-  <img src="screenshots/image_5.png" alt="image_5" width="500" height="600" />
-</div>
+$C$: Set of customers
 
-<div align="center">
-  <img src="screenshots/image_6.png" alt="image_6" width="500" height="600" />
-</div>
+$P$: Set of products
+
+### Parameters
+
+$cap_{sw}$ : Capacity from supplier $s$ to warehouse $w$ (kg)
+
+$cap_{wd}$ : Capacity from warehouse $w$ to distribution centre $d$ (kg)
+
+$fixed_{sw}$ : Fixed cost for using $s \to w$ link
+
+$fixed_{wd}$ : Fixed cost for using $w \to d$ link
+
+$var_{sw}$ : Variable cost per kg for $s \to w$ link
+
+$var_{wd}$ : Variable cost per kg for $w \to d$ link
+
+$weight_p$ : Weight of one unit of product $p$ (kg/unit)
+
+$dist_{dc}$ : Euclidean distance from distribution centre $d$ to customer $c$
+
+$lastmilecost_p$ : Cost per kg per km for product $p$
+
+$demand_{cp}$ : Demand (in units) of product $p$ by customer $c$
+
+### Decision Variables
+
+$x_{swp} \geq 0$: Units of product $p$ transported from supplier $s$ to warehouse $w$
+
+$x_{wdp} \geq 0$: Units of product $p$ transported from warehouse $w$ to distribution centre $d$
+
+$x_{dcp} \geq 0$: Units of product $p$ delivered from distribution centre $d$ to customer $c$
+
+$y_{sw} \in \{0,1\}$: Binary variable, 1 if link from $s$ to $w$ is used
+
+$y_{wd} \in \{0,1\}$: Binary variable, 1 if link from $w$ to $d$ is used
+
+### Objective Function
+
+Minimise total cost:
+
+$$
+Z =
+\sum_{s \in S}\sum_{w \in W}\Big( fixed_{sw}\,y_{sw} + \sum_{p \in P} var_{sw}\,x_{swp}\,weight_p \Big)
++ \sum_{w \in W}\sum_{d \in D}\Big( fixed_{wd}\,y_{wd} + \sum_{p \in P} var_{wd}\,x_{wdp}\,weight_p \Big)
++ \sum_{d \in D}\sum_{c \in C}\sum_{p \in P} x_{dcp}\,weight_p\,dist_{dc}\,lastmilecost_p.
+$$
+
+### Constraints
+
+**Demand satisfaction**
+$$
+\sum_{d \in D} x_{dcp} = demand_{cp} \quad \forall\, c \in C,\; \forall\, p \in P
+$$
+
+**Distribution centre flow balance**
+$$
+\sum_{w \in W} x_{wdp} = \sum_{c \in C} x_{dcp} \quad \forall\, d \in D,\; \forall\, p \in P
+$$
+
+**Warehouse flow balance**
+$$
+\sum_{s \in S} x_{swp} = \sum_{d \in D} x_{wdp} \quad \forall\, w \in W,\; \forall\, p \in P
+$$
+
+**Link capacity (Suppliers → Warehouses)**
+$$
+\sum_{p \in P} x_{swp}\,weight_p \le cap_{sw}\,y_{sw} \quad \forall\, s \in S,\; \forall\, w \in W
+$$
+
+**Link capacity (Warehouses → DCs)**
+$$
+\sum_{p \in P} x_{wdp}\,weight_p \le cap_{wd}\,y_{wd} \quad \forall\, w \in W,\; \forall\, d \in D
+$$
+
+**Route availability (disable infeasible links)**
+$$
+y_{s2,w1}=0,\; y_{w1,d4}=0,\; y_{w1,d5}=0,\; y_{w2,d2}=0,\; y_{w3,d1}=0,\; y_{w3,d2}=0
+$$
+
+**Customer-to-DC allocation (fixed service areas)**
+$$
+x_{dcp} = 0 \quad \text{if } c \notin CustomerGroup_d \quad \forall\, d \in D,\; \forall\, c \in C,\; \forall\, p \in P
+$$
+
+**Where**
+$$
+\begin{aligned}
+CustomerGroup_{D1}&=\{C1,\dots,C10\},\;
+CustomerGroup_{D2}=\{C11,\dots,C20\},\\
+CustomerGroup_{D3}&=\{C21,\dots,C30\},\;
+CustomerGroup_{D4}=\{C31,\dots,C40\},\\
+CustomerGroup_{D5}&=\{C41,\dots,C50\}.
+\end{aligned}
+$$
+
+**Variable types**
+
+$x_{swp},\, x_{wdp},\, x_{dcp} \in \mathbb{Z}_{\ge 0}, \qquad y_{sw},\, y_{wd} \in \{0,1\}$
+
 
 
 ## Supply Chain Optimization: A PuLP Implementation for Cost Minimization
@@ -122,63 +223,97 @@ These link-specific flows reflect the model's **cost-effective** allocation stra
 
 ### Recommendation (1): Strategic Network Optimization with Route Expansion
 
-Our primary recommendation involves the strategic opening of previously unused transportation routes: (W1,DC4), (W2,DC2), (W3,DC2), (W1,DC5), and (W3,DC1).
-The specific data regarding the fixed costs, variable costs, and capacity for these newly considered routes were unavailable. To ensure the accuracy of our model, we estimated these by calculating the average variable cost of existing outbound routes from Warehouses W1, W2, and W3 to various Distribution Centres (as detailed in Table 2). 
+Our **primary recommendation** involves the **strategic opening** of previously unused transportation routes: (W1,DC4), (W2,DC2), (W3,DC2), (W1,DC5), and (W3,DC1).
+The specific **data** regarding the fixed costs, variable costs, and capacity for these newly considered routes were **unavailable**. To ensure the accuracy of our model, we estimated these by calculating the average variable cost of existing outbound routes from Warehouses W1, W2, and W3 to various Distribution Centres (as detailed in **Table 2**). 
 
 
 <div align="center">
   <img src="screenshots/image_11.png" alt="image_11" width="500" height="200" />
 </div>
 
-Recognizing that the prior unavailability of these links might stem from higher associated costs, we conservatively increased this calculated average variable cost by €2. This increment, representing approximately half of the average variable cost, is intended to account for factors such as longer distances or other increased operational expenses for these newly opened routes.
+Recognizing that the prior unavailability of these links might stem from **higher associated costs**, we conservatively increased this calculated average variable cost by **€2**. This increment, representing approximately half of the average variable cost, is intended to account for factors such as **longer distances** or other increased operational expenses for these newly opened routes.
 
 <div align="center">
   <img src="screenshots/image_12.png" alt="image_12" width="500" height="200" />
 </div>
 
-A key outcome of the optimization is the strategic integration of the W2-DC2 route into the operational network, which was previously unavailable. Complementing this, a notable change in traffic involves Warehouse W1: while the Initial Model directed goods from W1 to DC2, the Adjusted Model now reroutes W1's traffic to DC3 as shown in Figure 4.
+A key **outcome** of the optimization is the strategic integration of the **W2-DC2 route** into the operational network, which was previously unavailable. Complementing this, a notable change in traffic involves Warehouse W1: while the Initial Model directed goods from W1 to DC2, the Adjusted Model now reroutes W1's traffic to DC3 as shown in **Figure 4**.
 
-By implementing these adjustments, the total transportation cost decreased from €824,980.94 to €802,060.27, representing a saving of approximately €22,920.67. This demonstrates that the proposed changes lead to a more efficient and cost-effective distribution strategy. 
+By implementing these **adjustments**, the **total transportation** cost decreased from **€824,980.94** to **€802,060.27**, representing a saving of approximately **€22,920.6**. This demonstrates that the proposed changes lead to a more efficient and cost-effective distribution strategy. 
 
 <div align="center">
   <img src="screenshots/image_14.png" alt="image_14" width="500" height="300" />
 </div>
 
-The pie chart effectively illustrates that the Route Expansion Model accounts for a smaller proportion (49%) of the combined costs compared to the Initial Model (51%). This directly demonstrates the successful cost reduction and improved efficiency achieved through the model adjustments.
+The **pie chart** effectively illustrates that the **Route Expansion Model** accounts for a smaller proportion (**49%)** of the combined costs compared to the Initial Model **(51%)**. This directly demonstrates the successful cost reduction and improved efficiency achieved through the model adjustments.
 
 
 ### Recommendation (2): Strategic Relocation Proposal – Northeast Site (33×60)
 
-In large-scale distribution networks, even modest changes in facility location can yield substantial efficiency gains. This section explores a targeted relocation of Distribution Centre 1 (DC1) from its existing coordinates at (45, 45) to a proposed site at (33, 60). The motivation for this adjustment stems from spatial inefficiencies observed in last-mile delivery to nearby customers, particularly those in the C1–C10 group.
+In large-scale distribution networks, even modest changes in facility location can yield substantial efficiency gains. This section explores a targeted **relocation of Distribution Centre 1 (DC1)** from its existing coordinates at **(45, 45)** to a proposed site at **(33, 60)**. The motivation for this adjustment stems from spatial **inefficiencies** observed in l**ast-mile delivery** to nearby **customers**, particularly those in the **C1–C10** group.
 
 
 <div align="center">
   <img src="screenshots/image_15.png" alt="image_15" width="600" height="600" />
 </div>
 
-Figure 6 presents a visual comparison of customer locations relative to both the existing and proposed DC sites. Customers are color-coded to indicate which of the two DCs they are closer to, making it clear that the proposed site better aligns with the majority of nearby demand points. 
+**Figure 6** presents a visual comparison of customer locations relative to both the **existing** and **proposed** DC sites. Customers are color-coded to indicate which of the two DCs they are closer to, making it clear that the proposed site better aligns with the majority of nearby demand points. 
 
 <div align="center">
   <img src="screenshots/image_16.png" alt="image_16" width="500" height="200" />
 </div>
 
-According to Table 4, 8 out of the 10 customers in this cluster would be geographically closer to the proposed DC, some by a substantial margin such as Customer C9, whose distance drops from 22.8 to just 3.61 units.
+According to **Table 4**, **8** out of the **10** customers in this cluster would be geographically closer to the proposed DC, some by a substantial margin such as Customer **C9**, whose distance drops from **22.8** to just **3.61** units.
 
 
 <div align="center">
   <img src="screenshots/image_17.png" alt="image_17" width="500" height="200" />
 </div>
 
-Operational implications of this shift are further highlighted in Figure 7, which compares total network costs under the current and proposed configurations. The optimized solution with the new DC location results in a reduced total cost of €811,587.08, compared to €824,980.94 in the initial setup. This cost improvement of over €13,000 validates the effectiveness of the relocation strategy.
+Operational **implications** of this shift are further highlighted in **Figure 7**, which compares total network costs under the **current** and **proposed** configurations. The optimized solution with the new DC location results in a reduced total cost of **€811,587.08**, compared to **€824,980.94** in the initial setup. This cost improvement of over **€13,000** validates the effectiveness of the relocation strategy.
 
-## Limitations 
+## Limitations and Possible Improvements of Initial Model and Strategic Recommendations 
+
+### Model-Specific Limitations
+
+**Estimated Cost Parameters:** New route costs and capacities were approximated using averages, which may reduce accuracy.
+**Improvement**: Replace with real transport data once available.
+
+**Unverified Route Feasibility:** Regulatory, geographic, or infrastructure constraints were not validated.
+**Improvement:** Assess operational feasibility of proposed links.
+
+**Simplified Cost Assumptions:** Uniform uplifts (e.g., €2/kg) oversimplify real variability.
+**Improvement:** Use differentiated cost data for new routes.
+
+### Relocation Proposal Limitations
+
+**Excludes Transition Costs:** One-time relocation and capital expenses were not considered.
+**Improvement:** Incorporate relocation and investment costs.
+
+**Simplified Last-Mile Delivery:** Model omits traffic and routing complexity.
+**Improvement:** Extend last-mile modelling with realistic urban delivery factors.
+
+**Static Customer Assignment:** Customers remain fixed to DCs post-relocation.
+**Improvement:** Allow dynamic assignment to optimise costs.
+
+### General Limitations
+
+**Deterministic Demand:** Customer demand is assumed fixed.
+Improvement: Introduce stochastic demand scenarios.
+
+**No Inventory Modelling:** Warehouses are treated as pure transshipment nodes.
+**Improvement:** Add inventory levels and holding costs to capture bottlenecks.
+
 
 ## Conclusion 
 
+The optimisation of **DeliverEase Ltd.’s supply chain** demonstrates how data-driven modelling can significantly reduce **logistics costs** and improve network **efficiency**. By incorporating real-world **constraints** such as capacities, fixed and variable costs, and demand satisfaction, the model identified o**ptimal shipment flows** and highlighted opportunities for further savings through **route expansion** and **strategic relocation of facilities**. These results confirm the value of **mathematical optimisation** as a decision-support tool for supply chain management, while also pointing to areas for future enhancement, including demand uncertainty, inventory considerations, and more realistic last-mile delivery modelling.
+
+
 ## How to Use
 
-1. **Install dependencies**: pandas, matplotlib, numpy.
-2. **Load datasets**: use pd.read_csv() and adjust the file path/directory as needed.
+1. **Install dependencies**: Pulp, pandas, numpy, matplotlib.
+2. **Load datasets**: use pd.read_excel() and adjust the file path/directory as needed.
 
 ## Author  
 Created by **Arsen Pankiv**  
