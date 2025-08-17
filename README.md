@@ -61,21 +61,20 @@ the number of units of product.
 
 ### Last mile delivery
 
-Last-mile delivery covers shipments from **distribution centre**s to **customers**. The company uses its own
-**vehicle fleet** and estimates transport costs based on the **distance** between each distribution centre and
+Last-mile delivery covers shipments from **distribution centres** to **customers**. The company uses its own
+**vehicle fleet** and estimates transport costs based on the **distance** between each **distribution centre** and
 **customer location**. The sheet **“Last-mile-cost per product per kg”** provides unit costs (in euros per kg
 per kilometre), which vary by product type. 
-Note that the distribution costs are based on product
+The distribution costs are based on product
 weight , rather than the number of units of product. Coordinates for all distribution centres and
-customers are listed in **“Last mile coordinates”**, and distances were calculated using the Euclidean
-formula (assumed in kilometre). Customer
+customers are listed in **“Last mile coordinates”**. Customer
 demands for each product type are provided in the sheet **“Demands per product type”**, representing the
 number of product units ordered by **each customer**. 
 
 
 ## Task Overview
 
-The project involved formulating a mathematical optimisation model to **minimise total distribution costs** for DeliverEase Ltd.’s supply chain, incorporating route availability, capacity limits, flow balance, and demand satisfaction. The model, implemented in Python using **PuLP**, was solved to identify the **optimal shipment plan** and **report total costs** and **shipment weights** for each **link** between suppliers, warehouses, and distribution centres. Network flow **visualisations** were created to illustrate shipment magnitudes, and **two data-driven managerial recommendations** were developed to enhance cost efficiency and resilience to demand uncertainty. Finally, several **limitations** and **recommendations** were considered to ensure the accuracy of the model.l
+The project involved formulating a mathematical optimisation model to **minimise total distribution costs** for **DeliverEase Ltd.’s** supply chain, incorporating route availability, capacity limits, flow balance, and demand satisfaction. The model, implemented in **Python** using **PuLP**, was solved to identify the **optimal shipment plan** and **report total costs** and **shipment weights** for each **link** between suppliers, warehouses, and distribution centres. Network flow **visualisations** were created to illustrate shipment magnitudes, and **two data-driven managerial recommendations** were developed to enhance cost efficiency and resilience to demand uncertainty. Finally, several **limitations** and **recommendations** were considered to ensure the accuracy of the model.
 
 ## Mathematical Programming Formulation
 
