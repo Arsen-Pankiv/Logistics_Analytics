@@ -197,8 +197,6 @@ $$
 CustomerGroup_{D5} = \{ C41, C42, \dots, C50 \}
 $$
 
----
-
 ### Variable types
 
 $$
