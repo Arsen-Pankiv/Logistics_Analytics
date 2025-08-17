@@ -231,7 +231,7 @@ These link-specific flows reflect the model's **cost-effective** allocation stra
   <img src="screenshots/image_9.png" alt="image_9" width="600" height="600" />
 </div>
 
-**Figure 3** illustrates the optimized product flow across a **multi-tiered supply chain**. It visually maps geographical locations of Suppliers **(orange triangles)**, Warehouses **(green stars)**, and Distribution Centres **(red stars)**. Connections denote pathways:**orange lines** for supplier-to-warehouse shipments, and **green lines** for warehouse-to-DC movements. Each line is clearly labelled with the exact product volume **(kg)**, providing a comprehensive view of the logistical plan.
+**Figure 3** illustrates the optimized product flow across a **multi-tiered supply chain**. It visually maps geographical locations of Suppliers **(orange triangles)**, Warehouses **(green stars)**, and Distribution Centres **(red stars)**. Connections denote pathways: **orange lines** for supplier-to-warehouse shipments, and **green lines** for warehouse-to-DC movements. Each line is clearly labelled with the exact product volume **(kg)**, providing a comprehensive view of the logistical plan.
 
 
 <div align="center">
