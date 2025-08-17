@@ -47,9 +47,7 @@ the geographical locations of all customers.
 </div>
 
 ### Product Information
-The company has selected five products **(P1 to P5)** for analysis. The full dataset is available in the
-file **“data.xlsx”**. Product weights can be found on the **“Product weights”** sheet.
-
+The company has selected five products **(P1 to P5)** for analysis. 
 
 ### Shipping operations
 Products are transported by barge from **suppliers** to **warehouses**, and then by train from **warehouses** to
@@ -58,7 +56,7 @@ first pay a **fixed cost** upfront to reserve its capacity. Only after this rese
 along that link. The **“Shipping information”** sheet in the dataset provides details on the **capacity of
 each link**, as well as the associated **fixed** and **variable costs**. Variable costs are charged **per kilogram** of
 product, regardless of the product type. The total weight shipped on any link must not exceed its
-capacity. Note that the shipping capacity and variable costs are based on **product weight**, rather than
+capacity. The shipping capacity and variable costs are based on **product weight**, rather than
 the number of units of product.
 
 ### Last mile delivery
